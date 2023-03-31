@@ -10,8 +10,6 @@ function App() {
     const [minute, setMinute] = useState(date.getMinutes());
     const [second, setSecond] = useState(date.getSeconds());
 
-    const [open, setOpen] = useState(false);
-
     useState(() => {
         setInterval(() => {
             const date = new Date();
@@ -29,7 +27,7 @@ function App() {
     const face__minute = useRef();
     const face__second = useRef();
 
-    if (face__hour.current !== undefined && face__minute.current !== undefined && face__second.current !== undefined) {
+    if (face__hour.current && face__minute.current && face__second.current) {
         face__hour.current.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg)`;
         face__minute.current.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg)`;
         face__second.current.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg)`;
