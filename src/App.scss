@@ -102,23 +102,24 @@
     }
 }
 
-.clock-face {
-    @mixin onCircle($count, $deg, $radius) {
-        top: 46%;
-        left: 47%;
-        @for$i from 1 through $count {
-            &:nth-of-type(#{$i}) {
-                transform: rotate($deg * $i - 90deg) translate($radius) rotate(-$deg * $i + 90deg);
-            }
+@mixin onCircle($count, $deg, $radius, $top, $left) {
+    @for$i from 1 through $count {
+        &:nth-of-type(#{$i}) {
+            top: $top;
+            left: $left;
+            transform: rotate($deg * $i - 90deg) translate($radius) rotate(-$deg * $i + 90deg);
         }
     }
+}
+
+.clock-face {
     span {
         position: absolute;
         transform-origin: bottom;
         transition: all 0.3s ease-in-out;
         color: var(--color-septenary);
         font-size: 3rem;
-        @include onCircle(12, 30deg, 19rem);
+        @include onCircle(12, 30deg, 19rem, 46%, 47%);
     }
 
     .dot {
@@ -206,5 +207,36 @@
             background-color: var(--color-senary);
             box-shadow: 0 0 20px var(--color-senary), 0 0 60px var(--color-senary);
         }
+    }
+}
+
+@media all and (max-width: 576px) {
+    .clock {
+        height: 475px;
+        width: 280px;
+    }
+
+    .clock-face {
+        span {
+            @include onCircle(12, 30deg, 11.5rem, 43%, 45%);
+        }
+    }
+
+    .clock-face .clock-face__hour::after {
+        top: 30%;
+        left: 50%;
+        height: 75px;
+    }
+
+    .clock-face .clock-face__minute::after {
+        top: 23%;
+        left: 50%;
+        height: 90px;
+    }
+
+    .clock-face .clock-face__second::after {
+        top: 12%;
+        left: 50%;
+        height: 115px;
     }
 }
