@@ -1,5 +1,5 @@
 import { Button, DatePicker, TimePicker } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import '~/App.scss';
 import Clock from './Clock';
 import Time from './Time';
@@ -10,14 +10,24 @@ function App() {
     const [minute, setMinute] = useState(date.getMinutes());
     const [second, setSecond] = useState(date.getSeconds());
 
-    useState(() => {
-        setInterval(() => {
+    const API_key = '439d4b804bc8187953eb36d2a8c26a02';
+    const City = 'Bangkok';
+    useMemo(() => {
+        fetch(`https://openweathermap.org/data/2.5/weather?q=${City}&appid=${API_key}`)
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log('Không tìm thấy thành phố'));
+    }, [City]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
             const date = new Date();
             setHour(date.getHours());
             setMinute(date.getMinutes());
             setSecond(date.getSeconds());
         }, 1000);
-    }, [hour, minute, second]);
+        return () => clearInterval(timer);
+    }, []);
 
     let hourDeg = hour < 12 ? hour * 30 + minute * 0.5 : (hour - 12) * 30 + minute * 0.5;
     let minuteDeg = minute * 6;
